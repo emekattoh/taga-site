@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { FadeIn } from "@/components/ui/fade-in";
 
@@ -66,8 +67,15 @@ export default function AboutPage() {
             </p>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <div className="aspect-[4/3] w-full rounded-3xl bg-fairway-100 flex items-center justify-center text-fairway-400">
-              <span className="text-sm">Add a group photo here</span>
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-fairway-100">
+              <Image
+                src="/images/about/group-photo.jpg"
+                alt="TAGA members posing with their golf carts on the course"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
+              />
             </div>
           </FadeIn>
         </div>
