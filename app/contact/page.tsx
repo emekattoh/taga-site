@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact — TAGA",
-  description: "Get in touch with the Texas America Golf Association.",
+  description: "Get in touch with the Texas African Golf Association.",
 };
 
 export default function ContactPage() {

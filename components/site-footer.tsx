@@ -16,7 +16,7 @@ export function SiteFooter() {
             </span>
           </div>
           <p className="mt-3 text-sm leading-6 text-fairway-300">
-            Texas America Golf Association — a community of golfers playing
+            Texas African Golf Association — a community of golfers playing
             weekly tournaments across Texas.
           </p>
         </div>
@@ -50,7 +50,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-fairway-900/40 px-5 py-5 text-center text-xs text-fairway-400">
-        © {year} Texas America Golf Association (TAGA). All rights reserved.
+        © {year} Texas African Golf Association (TAGA). All rights reserved.
       </div>
     </footer>
   );

@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = {
   title: "About — TAGA",
-  description: "Learn about the Texas America Golf Association.",
+  description: "Learn about the Texas African Golf Association.",
 };
 
 const VALUES = [
@@ -35,10 +35,10 @@ export default function AboutPage() {
               About Us
             </p>
             <h1 className="font-display mx-auto mt-3 max-w-2xl text-balance text-4xl font-semibold text-fairway-50 sm:text-5xl">
-              Texas America Golf Association
+              Texas African Golf Association
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg text-fairway-200">
-              TAGA (Texas America Golf Association) is a community of golfers
+              TAGA (Texas African Golf Association) is a community of golfers
               who play weekly tournaments across Texas — built on friendly
               competition, camaraderie, and a shared love for the game.
             </p>

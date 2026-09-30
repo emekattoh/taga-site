@@ -35,7 +35,7 @@ export default function Home() {
         <div className="bg-dot-grid absolute inset-0 opacity-20" />
         <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
           <FadeIn>
-            <Eyebrow>Texas America Golf Association</Eyebrow>
+            <Eyebrow>Texas African Golf Association</Eyebrow>
           </FadeIn>
           <FadeIn delay={0.05}>
             <h1 className="font-display max-w-3xl text-balance text-4xl font-semibold tracking-tight text-fairway-50 sm:text-6xl">

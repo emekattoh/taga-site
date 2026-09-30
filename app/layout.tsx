@@ -16,9 +16,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "TAGA — Texas America Golf Association",
+  title: "TAGA — Texas African Golf Association",
   description:
-    "Texas America Golf Association (TAGA) — weekly tournaments, community, and golf across Texas.",
+    "Texas African Golf Association (TAGA) — weekly tournaments, community, and golf across Texas.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
