@@ -147,7 +147,7 @@ export default function TournamentsPage() {
                     </div>
                   )}
 
-                  {t.gallery && t.gallery.length > 0 ? (
+                  {t.gallery && t.gallery.length > 0 && (
                     <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                       {t.gallery.map((src, i) => (
                         <FadeIn key={src} delay={i * 0.05}>
@@ -162,19 +162,6 @@ export default function TournamentsPage() {
                           </div>
                         </FadeIn>
                       ))}
-                    </div>
-                  ) : (
-                    <div className="mt-10 rounded-2xl border border-dashed border-fairway-200 bg-fairway-50 p-8 text-center text-sm text-fairway-700/70">
-                      Photos from this tournament will be added soon. Drop
-                      images into{" "}
-                      <code className="rounded bg-white px-1.5 py-0.5">
-                        /public/images/tournaments/
-                      </code>{" "}
-                      and reference them in{" "}
-                      <code className="rounded bg-white px-1.5 py-0.5">
-                        lib/data/tournaments.ts
-                      </code>
-                      .
                     </div>
                   )}
                 </div>
