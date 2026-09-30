@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Section, SectionHeading, Eyebrow } from "@/components/ui/section";
 import { FadeIn } from "@/components/ui/fade-in";
-import { WinnerPodium } from "@/components/winner-podium";
-import { tournaments } from "@/lib/data/tournaments";
+import { getUpcomingTournament, getCourseMapUrl } from "@/lib/data/tournaments";
 
 const HIGHLIGHTS = [
   {
@@ -26,7 +25,7 @@ const HIGHLIGHTS = [
 ];
 
 export default function Home() {
-  const latestTournament = tournaments[0];
+  const upcoming = getUpcomingTournament();
 
   return (
     <>
@@ -91,26 +90,39 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Latest tournament winners teaser */}
-      {latestTournament && (
+      {/* Upcoming tournament teaser */}
+      {upcoming && (
         <Section className="bg-fairway-50 rounded-3xl">
           <SectionHeading
-            eyebrow="Fresh off the course"
-            title={`${latestTournament.title} — ${latestTournament.date}`}
-            description={latestTournament.summary}
+            eyebrow={upcoming.displayDate}
+            title={upcoming.title}
+            description={upcoming.summary}
             align="center"
           />
-          <div className="mt-12">
-            <WinnerPodium winners={latestTournament.winners} />
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              href="/tournaments"
-              className="rounded-full bg-fairway-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-fairway-600"
-            >
-              View All Tournaments &amp; Photos
-            </Link>
-          </div>
+          <FadeIn delay={0.05}>
+            <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-fairway-100 bg-white p-6 text-center shadow-sm">
+              <p className="font-display text-lg font-semibold text-fairway-950">
+                {upcoming.course.name}
+              </p>
+              <p className="text-fairway-800/80">{upcoming.course.address}</p>
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
+                <Link
+                  href="/tournaments"
+                  className="rounded-full bg-fairway-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-fairway-600"
+                >
+                  Tournament Details
+                </Link>
+                <a
+                  href={getCourseMapUrl(upcoming.course)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-fairway-200 px-6 py-3 text-sm font-semibold text-fairway-800 transition-colors hover:bg-fairway-50"
+                >
+                  Get Directions
+                </a>
+              </div>
+            </div>
+          </FadeIn>
         </Section>
       )}
 

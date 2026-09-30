@@ -3,15 +3,22 @@ import Image from "next/image";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { FadeIn } from "@/components/ui/fade-in";
 import { WinnerPodium } from "@/components/winner-podium";
-import { tournaments, getAllFirstPlaceWinners } from "@/lib/data/tournaments";
+import {
+  getUpcomingTournament,
+  getPastTournaments,
+  getAllFirstPlaceWinners,
+  getCourseMapUrl,
+} from "@/lib/data/tournaments";
 
 export const metadata: Metadata = {
   title: "Tournaments — TAGA",
   description:
-    "TAGA weekly tournament results, photos, and our Hall of Fame of past winners.",
+    "TAGA tournament schedule, results, photos, and our Hall of Fame of past winners.",
 };
 
 export default function TournamentsPage() {
+  const upcoming = getUpcomingTournament();
+  const pastTournaments = getPastTournaments();
   const hallOfFame = getAllFirstPlaceWinners();
 
   return (
@@ -23,101 +30,201 @@ export default function TournamentsPage() {
               On The Course
             </p>
             <h1 className="font-display mx-auto mt-3 max-w-2xl text-balance text-4xl font-semibold text-fairway-50 sm:text-5xl">
-              Weekly Tournaments &amp; Hall of Fame
+              Tournaments &amp; Hall of Fame
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg text-fairway-200">
-              Every week TAGA members compete for the podium. Here&rsquo;s
-              the latest action, photos from the course, and our running
-              Hall of Fame of tournament winners.
+              See what&rsquo;s coming up next, catch up on past results and
+              photos, and browse our running Hall of Fame of tournament
+              winners.
             </p>
           </FadeIn>
         </Section>
       </div>
 
-      {/* Tournament results */}
-      {tournaments.map((t, idx) => (
-        <Section key={t.id} className={idx > 0 ? "border-t border-fairway-100" : ""}>
-          <SectionHeading
-            eyebrow={t.date}
-            title={t.title}
-            description={`${t.course}${t.summary ? " — " + t.summary : ""}`}
-          />
+      {/* Upcoming tournament */}
+      {upcoming && (
+        <Section>
+          <SectionHeading eyebrow="Up Next" title="Upcoming Tournament" />
 
-          <div className="mt-12">
-            <WinnerPodium winners={t.winners} />
-          </div>
+          <FadeIn delay={0.05}>
+            <div className="mt-10 overflow-hidden rounded-3xl border border-fairway-100 bg-white shadow-sm">
+              <div className="bg-fairway-900 px-8 py-6">
+                <p className="text-sm font-semibold uppercase tracking-widest text-gold-300">
+                  {upcoming.displayDate}
+                </p>
+                <h3 className="font-display mt-1 text-2xl font-semibold text-fairway-50 sm:text-3xl">
+                  {upcoming.title}
+                </h3>
+              </div>
 
-          {t.gallery && t.gallery.length > 0 ? (
-            <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {t.gallery.map((src, i) => (
-                <FadeIn key={src} delay={i * 0.05}>
-                  <div className="relative aspect-square overflow-hidden rounded-xl bg-fairway-100">
-                    <Image
-                      src={src}
-                      alt={`${t.title} photo ${i + 1}`}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-12 rounded-2xl border border-dashed border-fairway-200 bg-fairway-50 p-10 text-center text-sm text-fairway-700/70">
-              Photos from this tournament will be added soon. Drop images
-              into{" "}
-              <code className="rounded bg-white px-1.5 py-0.5">
-                /public/images/tournaments/
-              </code>{" "}
-              and reference them in{" "}
-              <code className="rounded bg-white px-1.5 py-0.5">
-                lib/data/tournaments.ts
-              </code>
-              .
-            </div>
-          )}
-        </Section>
-      ))}
-
-      {/* Hall of Fame */}
-      <Section className="bg-fairway-950 rounded-3xl">
-        <SectionHeading
-          eyebrow="Hall of Fame"
-          title="Our Champions"
-          description="A running list of every weekly tournament's top finisher — updated as new champions are crowned."
-          align="center"
-        />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {hallOfFame.map((entry, i) => (
-            <FadeIn key={entry.tournamentTitle + entry.date} delay={i * 0.06}>
-              <div className="flex items-center gap-4 rounded-2xl bg-fairway-900 p-5">
-                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gold-400/10 text-2xl ring-2 ring-gold-400">
-                  {entry.winner.photo ? (
-                    <Image
-                      src={entry.winner.photo}
-                      alt={entry.winner.name}
-                      fill
-                      sizes="56px"
-                      className="rounded-full object-cover"
-                    />
-                  ) : (
-                    "🏆"
-                  )}
-                </div>
+              <div className="grid gap-8 p-8 lg:grid-cols-2">
                 <div>
-                  <p className="font-display font-semibold text-fairway-50">
-                    {entry.winner.name}
+                  <h4 className="text-sm font-semibold uppercase tracking-wide text-gold-600">
+                    About This Tournament
+                  </h4>
+                  <p className="mt-3 leading-7 text-fairway-800/80">
+                    {upcoming.description ?? upcoming.summary}
                   </p>
-                  <p className="text-sm text-fairway-300">
-                    {entry.tournamentTitle} · {entry.date}
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold uppercase tracking-wide text-gold-600">
+                    Course &amp; Directions
+                  </h4>
+                  <p className="mt-3 font-display text-lg font-semibold text-fairway-950">
+                    {upcoming.course.name}
                   </p>
+                  <p className="text-fairway-800/80">{upcoming.course.address}</p>
+                  {upcoming.course.phone && (
+                    <p className="text-fairway-800/80">{upcoming.course.phone}</p>
+                  )}
+                  {upcoming.course.directions && (
+                    <p className="mt-3 text-sm leading-6 text-fairway-700/80">
+                      {upcoming.course.directions}
+                    </p>
+                  )}
+                  <a
+                    href={getCourseMapUrl(upcoming.course)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-fairway-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-fairway-600"
+                  >
+                    Get Directions
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="h-4 w-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.25 6.75 21 3m0 0h-5.25M21 3v5.25M6.75 6.75H4.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-2.25"
+                      />
+                    </svg>
+                  </a>
                 </div>
               </div>
-            </FadeIn>
-          ))}
+            </div>
+          </FadeIn>
+        </Section>
+      )}
+
+      {/* Past tournaments */}
+      {pastTournaments.length > 0 && (
+        <div className="border-t border-fairway-100 bg-fairway-50">
+          <Section>
+            <SectionHeading
+              eyebrow="Looking Back"
+              title="Past Tournaments"
+              description="Results, courses, and photos from tournaments TAGA has already played."
+            />
+
+            <div className="mt-12 space-y-16">
+              {pastTournaments.map((t) => (
+                <div key={t.id} className="rounded-3xl border border-fairway-100 bg-white p-8 shadow-sm">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="font-display text-2xl font-semibold text-fairway-950">
+                      {t.title}
+                    </h3>
+                    <p className="text-sm font-semibold text-gold-600">
+                      {t.displayDate}
+                    </p>
+                  </div>
+                  <p className="mt-1 text-fairway-800/70">
+                    {t.course.name}
+                    {t.course.address !== "TBD" ? ` — ${t.course.address}` : ""}
+                  </p>
+                  {t.summary && (
+                    <p className="mt-3 text-fairway-800/80">{t.summary}</p>
+                  )}
+
+                  {t.winners.length > 0 && (
+                    <div className="mt-10">
+                      <WinnerPodium winners={t.winners} />
+                    </div>
+                  )}
+
+                  {t.gallery && t.gallery.length > 0 ? (
+                    <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                      {t.gallery.map((src, i) => (
+                        <FadeIn key={src} delay={i * 0.05}>
+                          <div className="relative aspect-square overflow-hidden rounded-xl bg-fairway-100">
+                            <Image
+                              src={src}
+                              alt={`${t.title} photo ${i + 1}`}
+                              fill
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                              className="object-cover transition-transform duration-300 hover:scale-105"
+                            />
+                          </div>
+                        </FadeIn>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="mt-10 rounded-2xl border border-dashed border-fairway-200 bg-fairway-50 p-8 text-center text-sm text-fairway-700/70">
+                      Photos from this tournament will be added soon. Drop
+                      images into{" "}
+                      <code className="rounded bg-white px-1.5 py-0.5">
+                        /public/images/tournaments/
+                      </code>{" "}
+                      and reference them in{" "}
+                      <code className="rounded bg-white px-1.5 py-0.5">
+                        lib/data/tournaments.ts
+                      </code>
+                      .
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Section>
         </div>
-      </Section>
+      )}
+
+      {/* Hall of Fame */}
+      {hallOfFame.length > 0 && (
+        <Section className="bg-fairway-950 rounded-3xl">
+          <SectionHeading
+            eyebrow="Hall of Fame"
+            title="Our Champions"
+            description="A running list of every tournament's top finisher — updated as new champions are crowned."
+            align="center"
+          />
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {hallOfFame.map((entry, i) => (
+              <FadeIn key={entry.tournamentTitle + entry.date} delay={i * 0.06}>
+                <div className="flex items-center gap-4 rounded-2xl bg-fairway-900 p-5">
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gold-400/10 text-2xl ring-2 ring-gold-400">
+                    {entry.winner.photo ? (
+                      <Image
+                        src={entry.winner.photo}
+                        alt={entry.winner.name}
+                        fill
+                        sizes="56px"
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      "🏆"
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-display font-semibold text-fairway-50">
+                      {entry.winner.name}
+                    </p>
+                    <p className="text-sm text-fairway-300">
+                      {entry.tournamentTitle} · {entry.date}
+                    </p>
+                    <p className="text-xs text-fairway-400">{entry.course}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </Section>
+      )}
     </>
   );
 }
