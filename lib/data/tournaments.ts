@@ -78,6 +78,8 @@ export const tournaments: Tournament[] = [
       "TAGA celebrated Nigeria's Independence Day with a special tournament bringing the community together for a day of golf, friendship, competition, and camaraderie.",
     summary: "Celebrating Nigerian Independence Day on the course.",
     overallChampion: "Rita Okafor",
+    leaderboardEmbedHtml:
+      '<iframe src="https://app.squabbitgolf.com/w/league/LZRjEibwa?embed=leaderboard" width="100%" height="600" style="border:none;"></iframe>',
     winners: [
       { place: 1, name: "Rita Okafor", score: "Net" },
       { place: 2, name: "Thomas Adache", score: "Net" },
