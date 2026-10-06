@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/exco", label: "Exco" },
   { href: "/tournaments", label: "Tournaments" },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/social", label: "Social" },
   { href: "/newsletter", label: "Newsletter" },
   { href: "/contact", label: "Contact" },
 ];

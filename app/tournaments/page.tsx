@@ -4,14 +4,12 @@ import Link from "next/link";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { FadeIn } from "@/components/ui/fade-in";
 import { WinnerPodium } from "@/components/winner-podium";
-import { InstagramPost } from "@/components/instagram-post";
 import {
   getUpcomingTournament,
   getPastTournaments,
   getAllFirstPlaceWinners,
   getCourseMapUrl,
 } from "@/lib/data/tournaments";
-import { instagramPosts } from "@/lib/data/instagram";
 
 export const metadata: Metadata = {
   title: "Tournaments — TAGA",
@@ -220,24 +218,23 @@ export default function TournamentsPage() {
         </div>
       )}
 
-      {/* Instagram */}
-      {instagramPosts.length > 0 && (
-        <Section>
-          <SectionHeading
-            eyebrow="From Our Instagram"
-            title="More From The Course"
-            description="Follow TAGA on Instagram for more photos and highlights."
-            align="center"
-          />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {instagramPosts.map((url) => (
-              <FadeIn key={url}>
-                <InstagramPost url={url} />
-              </FadeIn>
-            ))}
-          </div>
-        </Section>
-      )}
+      {/* Social teaser */}
+      <Section className="text-center">
+        <SectionHeading
+          eyebrow="Follow Along"
+          title="More From Our Instagram"
+          description="Follow TAGA on Instagram for more photos and highlights from the course."
+          align="center"
+        />
+        <div className="mt-8">
+          <Link
+            href="/social"
+            className="inline-flex items-center gap-2 rounded-full bg-fairway-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-fairway-600"
+          >
+            View Our Social Page →
+          </Link>
+        </div>
+      </Section>
 
       {/* Hall of Fame */}
       {hallOfFame.length > 0 && (
