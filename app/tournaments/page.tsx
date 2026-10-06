@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { FadeIn } from "@/components/ui/fade-in";
 import { WinnerPodium } from "@/components/winner-podium";
-import { RawEmbed } from "@/components/raw-embed";
 import { InstagramPost } from "@/components/instagram-post";
 import {
   getUpcomingTournament,
@@ -112,11 +112,13 @@ export default function TournamentsPage() {
               </div>
 
               {upcoming.leaderboardEmbedHtml && (
-                <div className="border-t border-fairway-100 p-8">
-                  <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gold-600">
-                    Live Leaderboard
-                  </h4>
-                  <RawEmbed html={upcoming.leaderboardEmbedHtml} />
+                <div className="border-t border-fairway-100 p-8 text-center">
+                  <Link
+                    href="/leaderboard"
+                    className="inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-semibold text-fairway-950 transition-colors hover:bg-gold-300"
+                  >
+                    View Live Leaderboard →
+                  </Link>
                 </div>
               )}
             </div>
@@ -197,11 +199,13 @@ export default function TournamentsPage() {
                   )}
 
                   {t.leaderboardEmbedHtml && (
-                    <div className="mt-10">
-                      <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gold-600">
-                        Final Leaderboard
-                      </h4>
-                      <RawEmbed html={t.leaderboardEmbedHtml} />
+                    <div className="mt-10 text-center">
+                      <Link
+                        href="/leaderboard"
+                        className="inline-flex items-center gap-2 rounded-full bg-fairway-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-fairway-600"
+                      >
+                        View Full Leaderboard →
+                      </Link>
                     </div>
                   )}
 
