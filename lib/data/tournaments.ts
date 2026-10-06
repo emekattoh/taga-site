@@ -5,6 +5,12 @@ export type Winner = {
   photo?: string;
 };
 
+export type TrophyCategory = {
+  category: string;
+  icon?: string;
+  recipients: string[];
+};
+
 export type Course = {
   name: string;
   address: string;
@@ -19,8 +25,12 @@ export type Course = {
 export type Tournament = {
   id: string;
   title: string;
-  /** ISO date string, e.g. "2026-10-03". Used for sorting and to determine
-   * whether a tournament is upcoming or past. */
+  /** "upcoming" shows in the featured section at the top of the page.
+   * "completed" shows in Past Tournaments (and feeds the Hall of Fame).
+   * Flip this manually once a tournament wraps up — don't rely on the
+   * calendar date alone. */
+  status: "upcoming" | "completed";
+  /** ISO date string, e.g. "2026-10-03". Used only for sorting. */
   date: string;
   /** Human-friendly date/time shown on the page, e.g. "October 3, 2026 · 8:00 AM". */
   displayDate: string;
@@ -31,14 +41,22 @@ export type Tournament = {
   summary?: string;
   coverPhoto?: string;
   gallery?: string[];
-  /** Leave empty for tournaments that haven't happened yet. */
+  /** Net prize winners (1st/2nd/3rd). Leave empty until results are in. */
   winners: Winner[];
+  /** Trophy categories like Longest Drive, Closest to the Pin, Best Gross. */
+  trophies?: TrophyCategory[];
+  /** Headline "Overall Winner" callout, if the tournament names one. */
+  overallChampion?: string;
+  /** Paste the raw embed code from Squabbit (Tournament settings → Actions
+   * → Embedding Your Live Leaderboard) to show a live/final leaderboard
+   * for this tournament. Leave unset to hide the leaderboard block. */
+  leaderboardEmbedHtml?: string;
 };
 
-// Add new tournaments here — past or upcoming, in any order. The page
-// automatically figures out which one is the "current/upcoming" tournament
-// (the soonest one on or after today) and lists the rest as past
-// tournaments, most recent first.
+// Add new tournaments here — past or upcoming, in any order. Exactly one
+// tournament should have status "upcoming" at a time (the next one on the
+// calendar) — the page features it at the top. Everything with status
+// "completed" shows under Past Tournaments, most recent first.
 //
 // Put photos in /public/images/tournaments/ and /public/images/winners/
 // and reference them below.
@@ -46,6 +64,7 @@ export const tournaments: Tournament[] = [
   {
     id: "nigerian-independence-2026-10-03",
     title: "Nigerian Independence Tournament",
+    status: "completed",
     date: "2026-10-03",
     displayDate: "October 3, 2026 · 8:00 AM",
     course: {
@@ -53,67 +72,57 @@ export const tournaments: Tournament[] = [
       address: "20700 Mills Branch Dr, Porter, TX 77365",
       phone: "(281) 354-4653",
       directions:
-        "Oakhurst Golf Club is just north of downtown Houston off Highway 59 (US-59 N). Take Hwy 59 north out of Houston to the Mills Branch Dr exit and follow the access road — the club is on the west side of the road. Arrive by 7:30 AM to check in before the 8:00 AM shotgun start.",
+        "Oakhurst Golf Club is just north of downtown Houston off Highway 59 (US-59 N). Take Hwy 59 north out of Houston to the Mills Branch Dr exit and follow the access road — the club is on the west side of the road.",
     },
     description:
-      "TAGA celebrates Nigerian Independence Day with a special tournament bringing the community together for a day of golf, culture, and celebration. Come out for a fun, competitive round followed by food and fellowship to mark the occasion.",
+      "TAGA celebrated Nigeria's Independence Day with a special tournament bringing the community together for a day of golf, friendship, competition, and camaraderie.",
     summary: "Celebrating Nigerian Independence Day on the course.",
-    winners: [],
-    gallery: [],
-  },
-  {
-    id: "sample-weekly-2026-09-20",
-    title: "Weekly Tournament",
-    date: "2026-09-20",
-    displayDate: "September 20, 2026",
-    course: {
-      name: "TBD Golf Course",
-      address: "TBD",
-    },
-    summary:
-      "Add your latest weekly tournament here — results, a short recap, and photos from the round.",
+    overallChampion: "Rita Okafor",
     winners: [
-      { place: 1, name: "TBD", score: "—" },
-      { place: 2, name: "TBD", score: "—" },
-      { place: 3, name: "TBD", score: "—" },
+      { place: 1, name: "Rita Okafor", score: "Net" },
+      { place: 2, name: "Thomas Adache", score: "Net" },
+      { place: 3, name: "Chris Eledu", score: "Net" },
+    ],
+    trophies: [
+      {
+        category: "Longest Drive",
+        icon: "🚀",
+        recipients: ["Thomas Adache", "Nicholas", "Mabel Osazuwa", "Niyi Oyemade"],
+      },
+      {
+        category: "Closest to the Pin",
+        icon: "🎯",
+        recipients: ["Doks Odunsi", "Adebayo Akinfenwa", "Tolu A", "Kunle Ajayi"],
+      },
+      {
+        category: "Best Gross",
+        icon: "⛳",
+        recipients: ["Thomas Adache"],
+      },
+      {
+        category: "2nd Place Gross",
+        icon: "🥈",
+        recipients: ["Kunle Ajayi"],
+      },
     ],
     gallery: [],
   },
 ];
 
-function toDate(t: Tournament) {
-  return new Date(t.date + "T00:00:00");
-}
-
-/** The next tournament on or after today. Falls back to the most recently
- * dated tournament (even if in the past) if none are upcoming, so the page
- * always has something to feature. */
+/** The featured tournament at the top of the page — whichever one has
+ * status "upcoming". If more than one is marked upcoming, the soonest
+ * (by date) wins. Returns undefined if none are upcoming yet. */
 export function getUpcomingTournament(): Tournament | undefined {
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-
-  const upcoming = tournaments
-    .filter((t) => toDate(t) >= now)
-    .sort((a, b) => toDate(a).getTime() - toDate(b).getTime());
-
-  if (upcoming.length > 0) return upcoming[0];
-
-  // No upcoming tournaments — fall back to the most recent past one.
-  return [...tournaments].sort(
-    (a, b) => toDate(b).getTime() - toDate(a).getTime()
-  )[0];
+  return [...tournaments]
+    .filter((t) => t.status === "upcoming")
+    .sort((a, b) => a.date.localeCompare(b.date))[0];
 }
 
-/** All tournaments that already happened, most recent first, excluding
- * whichever tournament is currently featured as "upcoming". */
+/** All completed tournaments, most recent first. */
 export function getPastTournaments(): Tournament[] {
-  const upcoming = getUpcomingTournament();
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-
-  return tournaments
-    .filter((t) => t.id !== upcoming?.id && toDate(t) < now)
-    .sort((a, b) => toDate(b).getTime() - toDate(a).getTime());
+  return [...tournaments]
+    .filter((t) => t.status === "completed")
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 /** Builds a Google Maps search URL from a course if no explicit mapUrl is set. */
@@ -124,7 +133,7 @@ export function getCourseMapUrl(course: Course): string {
   )}`;
 }
 
-// Flattens winners across all past tournaments so the "Hall of Fame"
+// Flattens winners across all completed tournaments so the "Hall of Fame"
 // section can show every champion crowned so far.
 export function getAllFirstPlaceWinners() {
   return getPastTournaments()

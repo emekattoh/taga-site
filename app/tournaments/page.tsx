@@ -3,12 +3,15 @@ import Image from "next/image";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { FadeIn } from "@/components/ui/fade-in";
 import { WinnerPodium } from "@/components/winner-podium";
+import { RawEmbed } from "@/components/raw-embed";
+import { InstagramPost } from "@/components/instagram-post";
 import {
   getUpcomingTournament,
   getPastTournaments,
   getAllFirstPlaceWinners,
   getCourseMapUrl,
 } from "@/lib/data/tournaments";
+import { instagramPosts } from "@/lib/data/instagram";
 
 export const metadata: Metadata = {
   title: "Tournaments — TAGA",
@@ -107,6 +110,15 @@ export default function TournamentsPage() {
                   </a>
                 </div>
               </div>
+
+              {upcoming.leaderboardEmbedHtml && (
+                <div className="border-t border-fairway-100 p-8">
+                  <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gold-600">
+                    Live Leaderboard
+                  </h4>
+                  <RawEmbed html={upcoming.leaderboardEmbedHtml} />
+                </div>
+              )}
             </div>
           </FadeIn>
         </Section>
@@ -141,9 +153,55 @@ export default function TournamentsPage() {
                     <p className="mt-3 text-fairway-800/80">{t.summary}</p>
                   )}
 
+                  {t.overallChampion && (
+                    <div className="mt-6 flex items-center gap-3 rounded-2xl bg-gold-100 px-5 py-4">
+                      <span className="text-2xl">👑</span>
+                      <p className="font-display text-lg font-semibold text-fairway-950">
+                        Overall Winner: {t.overallChampion}
+                      </p>
+                    </div>
+                  )}
+
                   {t.winners.length > 0 && (
                     <div className="mt-10">
+                      <h4 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-gold-600">
+                        Net Prize Winners
+                      </h4>
                       <WinnerPodium winners={t.winners} />
+                    </div>
+                  )}
+
+                  {t.trophies && t.trophies.length > 0 && (
+                    <div className="mt-10">
+                      <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gold-600">
+                        Trophy Winners
+                      </h4>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        {t.trophies.map((trophy) => (
+                          <div
+                            key={trophy.category}
+                            className="rounded-2xl border border-fairway-100 bg-fairway-50 p-5"
+                          >
+                            <p className="font-display text-base font-semibold text-fairway-950">
+                              {trophy.icon} {trophy.category}
+                            </p>
+                            <ul className="mt-2 space-y-1 text-sm text-fairway-800/80">
+                              {trophy.recipients.map((name) => (
+                                <li key={name}>{name}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {t.leaderboardEmbedHtml && (
+                    <div className="mt-10">
+                      <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gold-600">
+                        Final Leaderboard
+                      </h4>
+                      <RawEmbed html={t.leaderboardEmbedHtml} />
                     </div>
                   )}
 
@@ -169,6 +227,25 @@ export default function TournamentsPage() {
             </div>
           </Section>
         </div>
+      )}
+
+      {/* Instagram */}
+      {instagramPosts.length > 0 && (
+        <Section>
+          <SectionHeading
+            eyebrow="From Our Instagram"
+            title="More From The Course"
+            description="Follow TAGA on Instagram for more photos and highlights."
+            align="center"
+          />
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {instagramPosts.map((url) => (
+              <FadeIn key={url}>
+                <InstagramPost url={url} />
+              </FadeIn>
+            ))}
+          </div>
+        </Section>
       )}
 
       {/* Hall of Fame */}
