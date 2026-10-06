@@ -24,10 +24,10 @@ export function SiteFooter() {
         <div>
           <h3 className="text-sm font-semibold text-gold-300">Explore</h3>
           <ul className="mt-3 space-y-2 text-sm text-fairway-200">
-            <li><Link href="/about" className="hover:text-gold-200">About TAGA</Link></li>
-            <li><Link href="/exco" className="hover:text-gold-200">Executive Committee</Link></li>
+            <li><Link href="/about" className="hover:text-gold-200">About &amp; Exco</Link></li>
             <li><Link href="/tournaments" className="hover:text-gold-200">Tournaments</Link></li>
-            <li><Link href="/newsletter" className="hover:text-gold-200">Newsletter</Link></li>
+            <li><Link href="/leaderboard" className="hover:text-gold-200">Leaderboard</Link></li>
+            <li><Link href="/social" className="hover:text-gold-200">Social</Link></li>
           </ul>
         </div>
 

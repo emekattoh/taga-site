@@ -133,15 +133,15 @@ export default function Home() {
             Ready to tee it up with TAGA?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-fairway-200">
-            Membership sign-up and online payments are coming soon. Get on
-            our newsletter list so you never miss a tournament announcement.
+            Membership sign-up and online payments are coming soon. Follow
+            us on Instagram so you never miss a tournament announcement.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
-              href="/newsletter"
+              href="/social"
               className="rounded-full bg-gold-400 px-6 py-3 text-sm font-semibold text-fairway-950 transition-colors hover:bg-gold-300"
             >
-              Subscribe to Newsletter
+              Follow Us on Instagram
             </Link>
             <Link
               href="/contact"
