@@ -47,10 +47,6 @@ export type Tournament = {
   trophies?: TrophyCategory[];
   /** Headline "Overall Winner" callout, if the tournament names one. */
   overallChampion?: string;
-  /** Paste the raw embed code from Squabbit (Tournament settings → Actions
-   * → Embedding Your Live Leaderboard) to show a live/final leaderboard
-   * for this tournament. Leave unset to hide the leaderboard block. */
-  leaderboardEmbedHtml?: string;
 };
 
 // Add new tournaments here — past or upcoming, in any order. Exactly one
@@ -78,8 +74,6 @@ export const tournaments: Tournament[] = [
       "TAGA celebrated Nigeria's Independence Day with a special tournament bringing the community together for a day of golf, friendship, competition, and camaraderie.",
     summary: "Celebrating Nigerian Independence Day on the course.",
     overallChampion: "Rita Okafor",
-    leaderboardEmbedHtml:
-      '<iframe src="https://app.squabbitgolf.com/w/league/LZRjEibwa?embed=leaderboard" width="100%" height="600" style="border:none;"></iframe>',
     winners: [
       { place: 1, name: "Rita Okafor", score: "Net" },
       { place: 2, name: "Thomas Adache", score: "Net" },

@@ -111,16 +111,14 @@ export default function TournamentsPage() {
                 </div>
               </div>
 
-              {upcoming.leaderboardEmbedHtml && (
-                <div className="border-t border-fairway-100 p-8 text-center">
-                  <Link
-                    href="/leaderboard"
-                    className="inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-semibold text-fairway-950 transition-colors hover:bg-gold-300"
-                  >
-                    View Live Leaderboard →
-                  </Link>
-                </div>
-              )}
+              <div className="border-t border-fairway-100 p-8 text-center">
+                <Link
+                  href="/leaderboard"
+                  className="inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-semibold text-fairway-950 transition-colors hover:bg-gold-300"
+                >
+                  View Live Leaderboard →
+                </Link>
+              </div>
             </div>
           </FadeIn>
         </Section>
@@ -195,17 +193,6 @@ export default function TournamentsPage() {
                           </div>
                         ))}
                       </div>
-                    </div>
-                  )}
-
-                  {t.leaderboardEmbedHtml && (
-                    <div className="mt-10 text-center">
-                      <Link
-                        href="/leaderboard"
-                        className="inline-flex items-center gap-2 rounded-full bg-fairway-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-fairway-600"
-                      >
-                        View Full Leaderboard →
-                      </Link>
                     </div>
                   )}
 
