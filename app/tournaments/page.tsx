@@ -155,7 +155,7 @@ export default function TournamentsPage() {
                     <div className="mt-6 flex items-center gap-3 rounded-2xl bg-gold-100 px-5 py-4">
                       <span className="text-2xl">👑</span>
                       <p className="font-display text-lg font-semibold text-fairway-950">
-                        Overall Winner: {t.overallChampion}
+                        {t.championTitle ?? "Overall Winner"}: {t.overallChampion}
                       </p>
                     </div>
                   )}
@@ -163,9 +163,18 @@ export default function TournamentsPage() {
                   {t.winners.length > 0 && (
                     <div className="mt-10">
                       <h4 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-gold-600">
-                        Net Prize Winners
+                        {t.grossWinners?.length ? "Low Net Winners" : "Net Prize Winners"}
                       </h4>
                       <WinnerPodium winners={t.winners} />
+                    </div>
+                  )}
+
+                  {t.grossWinners && t.grossWinners.length > 0 && (
+                    <div className="mt-10">
+                      <h4 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-gold-600">
+                        Low Gross Winners
+                      </h4>
+                      <WinnerPodium winners={t.grossWinners} />
                     </div>
                   )}
 
@@ -191,6 +200,19 @@ export default function TournamentsPage() {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {t.recapPostUrl && (
+                    <div className="mt-8">
+                      <a
+                        href={t.recapPostUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-fairway-700 hover:text-fairway-600"
+                      >
+                        View the tournament recap on Instagram →
+                      </a>
                     </div>
                   )}
 

@@ -43,10 +43,16 @@ export type Tournament = {
   gallery?: string[];
   /** Net prize winners (1st/2nd/3rd). Leave empty until results are in. */
   winners: Winner[];
+  /** Optional Low Gross winners (1st/2nd/3rd), shown as a second podium. */
+  grossWinners?: Winner[];
   /** Trophy categories like Longest Drive, Closest to the Pin, Best Gross. */
   trophies?: TrophyCategory[];
   /** Headline "Overall Winner" callout, if the tournament names one. */
   overallChampion?: string;
+  /** Label for the champion callout. Defaults to "Overall Winner". */
+  championTitle?: string;
+  /** Link to the tournament recap post on Instagram, if there is one. */
+  recapPostUrl?: string;
 };
 
 // Add new tournaments here — past or upcoming, in any order. Exactly one
@@ -57,6 +63,55 @@ export type Tournament = {
 // Put photos in /public/images/tournaments/ and /public/images/winners/
 // and reference them below.
 export const tournaments: Tournament[] = [
+  {
+    id: "sharpstown-park-2026-11-07",
+    title: "Sharpstown Park Tournament",
+    status: "completed",
+    date: "2026-11-07",
+    displayDate: "November 7, 2026",
+    course: {
+      name: "Sharpstown Park Golf Course",
+      address: "6900 Bissonnet St, Houston, TX 77074",
+    },
+    description:
+      "A fantastic day of golf, competition, and camaraderie at Sharpstown Park Golf Course. Rita Okafor dominated the leaderboard, taking home both the Low Net and Low Gross titles.",
+    summary:
+      "A fantastic day of golf, competition, and camaraderie — highlighted by Rita Okafor sweeping both Low Net and Low Gross.",
+    overallChampion: "Rita Okafor",
+    championTitle: "Double Champion — Low Net & Low Gross",
+    winners: [
+      { place: 1, name: "Rita Okafor", score: "-13" },
+      { place: 2, name: "Ebere Chimezie", score: "-9" },
+      { place: 3, name: "Jude Okafor", score: "-6" },
+    ],
+    grossWinners: [
+      { place: 1, name: "Rita Okafor", score: "+4" },
+      { place: 2, name: "Ebere Chimezie", score: "+5" },
+      { place: 3, name: "Jude Okafor", score: "+12" },
+    ],
+    trophies: [
+      {
+        category: "Closest to the Pin",
+        icon: "🎯",
+        recipients: [
+          "Akan Ekpenyong (Hole 16)",
+          "Jimmy Osazuwa (Hole 2)",
+          "Bernard Ukpu (Hole 7)",
+        ],
+      },
+      {
+        category: "Longest Drive",
+        icon: "💥",
+        recipients: [
+          "Emeka Uzoukwu (Hole 9)",
+          "Taoridi Bello (Hole 1)",
+          "Adeniyi Oyemade (Hole 18)",
+        ],
+      },
+    ],
+    recapPostUrl: "https://www.instagram.com/p/DfevAQKRLGX/",
+    gallery: [],
+  },
   {
     id: "nigerian-independence-2026-10-03",
     title: "Nigerian Independence Tournament",

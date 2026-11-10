@@ -3,6 +3,7 @@
 // choose "Copy Link" — paste that link below. Only public post links
 // will embed correctly for visitors.
 export const instagramPosts: string[] = [
+  "https://www.instagram.com/p/DfevAQKRLGX/",
   "https://www.instagram.com/p/DZOeQ1-DYr8/",
   "https://www.instagram.com/p/DTY4lEujdOY/",
   "https://www.instagram.com/p/DTWynrZDXpB/",
